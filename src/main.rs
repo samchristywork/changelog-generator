@@ -32,12 +32,12 @@ fn walk_git_history(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
                 let _ = meta.next().unwrap();
                 let package: String = meta
                     .next()
-                    .unwrap_or_else(|| "")
+                    .unwrap_or_else(|| "<Empty Package>")
                     .split_whitespace()
                     .collect();
                 let version: String = meta
                     .next()
-                    .unwrap_or_else(|| "")
+                    .unwrap_or_else(|| "<Empty Version>")
                     .split_whitespace()
                     .collect();
                 println!("Package: {}", package);
