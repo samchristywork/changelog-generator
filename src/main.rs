@@ -1,7 +1,11 @@
+use std::fs::File;
+use std::io::Write;
 use std::path::PathBuf;
 
 fn walk_git_history(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
     let repo = git2::Repository::discover(path)?;
+
+    let mut file = File::create("changelog").unwrap();
 
     let mut revwalk = repo.revwalk()?;
     revwalk.push_head()?;
@@ -41,6 +45,8 @@ fn walk_git_history(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
                 println!("\n\n");
             }
         });
+
+        writeln!(file, "{}", message).unwrap();
     }
     Ok(())
 }
