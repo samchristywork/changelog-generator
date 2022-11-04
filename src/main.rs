@@ -7,6 +7,8 @@ fn walk_git_history(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
 
     let mut file = File::create("changelog").unwrap();
 
+    let mut current_version = String::new();
+
     let mut revwalk = repo.revwalk()?;
     revwalk.push_head()?;
     revwalk.set_sorting(git2::Sort::TIME)?;
@@ -40,9 +42,13 @@ fn walk_git_history(path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
                     .unwrap_or_else(|| "<Empty Version>")
                     .split_whitespace()
                     .collect();
+
+                if version != current_version {
+                    current_version = String::new() + version.as_str();
+                }
                 println!("Package: {}", package);
                 println!("Version: {}", version);
-                println!("\n\n");
+                println!("");
             }
         });
 
